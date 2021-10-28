@@ -12,6 +12,7 @@ namespace SalesWebMvc.Controllers
 {
     public class DepartmentsController : Controller
     {
+        // class personalizada do entity framework
         private readonly SalesWebMvcContext _context;
 
         public DepartmentsController(SalesWebMvcContext context)
