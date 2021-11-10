@@ -36,8 +36,11 @@ namespace SalesWebMvc
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            // Para o método funcionar direito, temos que incluir a dependencia do MySQL (Pomelo.EntityFrameworkCore.MySql)
             services.AddDbContext<SalesWebMvcContext>(options =>
+            // Para fazer a conexão com o DB, temos que usar a class que estádentro dá pasta Data (SalesWebMvcContext)
                     options.UseMySql(Configuration.GetConnectionString("SalesWebMvcContext"), builder =>
+                    // O nome do nossa Assembly é o mesmo nome do nosso projeto. (SalesWebMvc)
                     builder.MigrationsAssembly("SalesWebMvc")));
         }
 

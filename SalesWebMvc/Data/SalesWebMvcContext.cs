@@ -14,6 +14,18 @@ namespace SalesWebMvc.Data
         {
         }
 
-        public DbSet<SalesWebMvc.Models.Department> Department { get; set; }
+        /* 
+         * Para que se entenda o modelo de dados, se faz necessário os métodos
+         * de DbSet, para que ele implemente no Banco as minhas alterações e
+         * relacionamentos. Com isso podemos fazer uma nova Migration para Add
+         * essas alterações no banco.
+         * 
+         * Como o nome da class é o mesmo nome do caminho, podemos apagar o
+         * a indicação.
+        */
+        public DbSet<Department> Department { get; set; }
+        public DbSet<Seller> Sellers { get; set; }
+        public DbSet<SalesRecord> SalesRecords { get; set; }
+
     }
 }
