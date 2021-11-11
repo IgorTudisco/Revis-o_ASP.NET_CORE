@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Data;
+using SalesWebMvc.Services;
 
 namespace SalesWebMvc
 {
@@ -45,6 +46,9 @@ namespace SalesWebMvc
 
             // Registrando o Serviço do SeedingService.
             services.AddScoped<SeedingService>();
+
+            // Registrando o Serviço do Service
+            services.AddScoped<SellerService>();
 
         }
 
