@@ -24,8 +24,8 @@ namespace SalesWebMvc.Data
          * a indicação.
         */
         public DbSet<Department> Department { get; set; }
-        public DbSet<Seller> Sellers { get; set; }
-        public DbSet<SalesRecord> SalesRecords { get; set; }
+        public DbSet<Seller> Seller { get; set; }
+        public DbSet<SalesRecord> SalesRecord { get; set; }
 
     }
 }
