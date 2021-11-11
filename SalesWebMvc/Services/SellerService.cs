@@ -23,5 +23,12 @@ namespace SalesWebMvc.Services
             return _context.Seller.ToList();
         }
 
+        // Add um novo Seller no DB
+        public void Insert(Seller seller)
+        {
+            _context.Add(seller);
+            _context.SaveChanges();
+        }
+
     }
 }

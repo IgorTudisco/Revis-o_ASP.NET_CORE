@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SalesWebMvc.Models;
 using SalesWebMvc.Services;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,23 @@ namespace SalesWebMvc.Controllers
             return View(list);
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Para preveni ataques de (XSRF/CSRF).
+        public IActionResult Create(Seller seller)
+        {
+            _sellerService.Insert(seller);
+
+            /*
+             * Para melhorar a manutenção do codgo, usamos nameof.
+             * Assim caso eu mude o Index, eu só preciso mudar em um único lugar.
+            */
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }
