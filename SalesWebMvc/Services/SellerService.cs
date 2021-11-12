@@ -31,5 +31,25 @@ namespace SalesWebMvc.Services
             _context.SaveChanges();
         }
 
+        /*
+         * Método que vai retornar o Seller no id selecionado.
+        */
+        public Seller FindById(int id)
+        {
+
+            return _context.Seller.FirstOrDefault(seller => seller.Id == id);
+
+        }
+
+        // A implementação foi baseada no scaffold de Departamento
+        public void Remove(int id)
+        {
+
+            var obj = _context.Seller.Find(id);
+            _context.Seller.Remove(obj);
+            _context.SaveChanges();
+
+        }
+
     }
 }

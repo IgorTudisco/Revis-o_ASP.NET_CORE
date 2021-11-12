@@ -58,5 +58,41 @@ namespace SalesWebMvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Ao passar o ? junto do parâmetro, o mesmo se torna opcional.
+        // Método de alerta de deleção.
+        public IActionResult Delete(int? id)
+        {
+
+            if (id == null)
+            {
+
+                return NotFound();
+
+            }
+
+            // Como usamos o ? essa variavel vira um nullable.
+            var obj = _sellerService.FindById(id.Value);
+
+            if (obj == null)
+            {
+
+                return NotFound();
+
+            }
+
+            return View(obj);
+
+        }
+
+        // Método que de fato irá fazer a deleção.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
+            return RedirectToAction(nameof(Index));
+
+        }
+
     }
 }

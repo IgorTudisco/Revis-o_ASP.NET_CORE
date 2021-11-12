@@ -82,9 +82,10 @@
                        asp-router-id para passar o id na nossa rota.
                        Para pegar o id usamos o item do for each.
                     -->
-                    <button class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</button>
-                    <button class="btn btn-info btn-default" asp-action="Details" asp-route-id="@item.Id">Details</button>
-                    <button class="btn btn-danger btn-default" asp-action="Delete" asp-route-id="@item.Id">Delete</button>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-info btn-default" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <!--Quando esse button for clicado ele irá chamar o nosso método delete passando o id do Seller.-->
+                    <a class="btn btn-danger btn-default" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
 
             </tr>
