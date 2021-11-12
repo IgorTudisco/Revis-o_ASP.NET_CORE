@@ -7,28 +7,23 @@ using System.Threading.Tasks;
 
 namespace SalesWebMvc.Services
 {
-    public class SellerService
+    public class DepartmentService
     {
+
         // O readonly garante que essa depencencia não pode ser alterada.
         private readonly SalesWebMvcContext _context;
 
-        public SellerService(SalesWebMvcContext context)
+        public DepartmentService(SalesWebMvcContext context)
         {
             _context = context;
         }
 
-        // Método que retornará uma lista com os vendedores.
-        public List<Seller> FindAll()
-        {
-            return _context.Seller.ToList();
-        }
-
-        // Add um novo Seller no DB
-        public void Insert(Seller seller)
+        // Metodo que retorna uma lista de departamentos ordenado pelo nome.
+        public List<Department> FindAll()
         {
 
-            _context.Add(seller);
-            _context.SaveChanges();
+            return _context.Department.OrderBy(by => by.Name).ToList();
+
         }
 
     }

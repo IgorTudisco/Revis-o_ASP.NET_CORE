@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SalesWebMvc.Models;
+using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,13 @@ namespace SalesWebMvc.Controllers
         // Inserindo uma dependencia de SellerService.
         private readonly SellerService _sellerService;
 
-        public SellersController(SellerService sellerService)
+        // Passando uma dependencia do DepartmentService
+        public DepartmentService _departmentService { get; set; }
+
+        public SellersController(SellerService sellerService, DepartmentService departmentService)
         {
             _sellerService = sellerService;
+            _departmentService = departmentService;
         }
 
         public IActionResult Index()
@@ -29,7 +34,15 @@ namespace SalesWebMvc.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            // Buscando todos os departamentos.
+            var departaments = _departmentService.FindAll();
+
+            /*
+             * Passando os departamentos para o nossa view
+             * models que conterá os nossos departamentos.
+            */
+            var viewModel = new SellerFormViewModel { Departments = departaments };
+            return View(viewModel);
         }
 
         [HttpPost]

@@ -50,6 +50,9 @@ namespace SalesWebMvc
             // Registrando o Serviço do Service
             services.AddScoped<SellerService>();
 
+            // Registrando o Serviço do Departamento
+            services.AddScoped<DepartmentService>();
+
         }
 
         /*
