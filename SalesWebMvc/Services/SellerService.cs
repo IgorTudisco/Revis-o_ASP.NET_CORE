@@ -26,6 +26,9 @@ namespace SalesWebMvc.Services
         // Add um novo Seller no DB
         public void Insert(Seller seller)
         {
+            // Solução temporária para passar a forignkey
+            seller.Department = _context.Department.First();
+
             _context.Add(seller);
             _context.SaveChanges();
         }
