@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SalesWebMvc.Services.Exceptions;
 
 namespace SalesWebMvc.Services
 {
@@ -56,6 +57,39 @@ namespace SalesWebMvc.Services
             var obj = _context.Seller.Find(id);
             _context.Seller.Remove(obj);
             _context.SaveChanges();
+
+        }
+
+        // Método que vau atualizar os vendedores
+        public void Update(Seller seller)
+        {
+            /*
+             * Verificando com o Any se tem algum item igual ao id passado.
+             * Se não existir ele vai lançar um exceção.
+            */
+            if (!_context.Seller.Any(x => x.Id == seller.Id))
+            {
+                // Lançamento personalizado.
+                throw new NotFoundException("Id not found");
+
+            }
+
+            /*
+             * Caso acontece algum erro de concorrência no DB
+             * ela será tratada no bloco try.
+            */
+            try
+            {
+
+                _context.Update(seller);
+                _context.SaveChanges();
+
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                // Relançando o erro dá minha camada de Serviço.
+                throw new DbConcurrencyException(e.Message);
+            }
 
         }
 

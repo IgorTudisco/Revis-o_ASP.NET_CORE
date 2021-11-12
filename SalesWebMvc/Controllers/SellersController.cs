@@ -2,6 +2,7 @@
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
+using SalesWebMvc.Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,6 +117,66 @@ namespace SalesWebMvc.Controllers
 
             return View(obj);
 
+
+        }
+
+        // Método que vai fazer a atualização do meu vendedor.
+        public IActionResult Edit(int? id)
+        {
+
+            if (id == null)
+            {
+
+                return NotFound();
+
+            }
+
+            var seller = _sellerService.FindById(id.Value);
+
+            if (seller == null)
+            {
+
+                return NotFound();
+
+            }
+
+            // Caso passe em tudo, ele vai mostrar uma lista de departamento
+            List<Department> departments = _departmentService.FindAll();
+
+            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+            return View(viewModel);
+
+        }
+
+        // Metódo de edição do vendedor
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Seller seller)
+        {
+
+            // Caso dê algum erro com o meu id na url.
+            if (id != seller.Id)
+            {
+
+                return BadRequest();
+
+            }
+
+            try
+            {
+
+            _sellerService.Update(seller);
+            return RedirectToAction(nameof(Index));
+
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbConcurrencyException)
+            {
+                return NotFound();
+            }
 
         }
 

@@ -2,7 +2,7 @@
 @model SalesWebMvc.Models.ViewModels.SellerFormViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -15,7 +15,13 @@
     <div class="col-md-4">
 
         <!--Esse Create é em relação ao método POST que está no controlador.-->
-        <form asp-action="Create">
+        <form asp-action="Edit">
+
+            <!--
+                Campo oculto com o id do vendedor.
+                Ele quem vai passar o id do vendedor atualizado.
+            -->
+            <input type="hidden" asp-for="Seller.Id" />
 
             <div class="form-group">
 
@@ -61,7 +67,7 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success" />
+                <input type="submit" value="Save" class="btn btn-success" />
                 <a asp-action="Index">Back to List</a>
             </div>
 
