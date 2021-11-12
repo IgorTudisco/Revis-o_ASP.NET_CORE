@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SalesWebMvc.Services
 {
@@ -36,8 +37,15 @@ namespace SalesWebMvc.Services
         */
         public Seller FindById(int id)
         {
-
-            return _context.Seller.FirstOrDefault(seller => seller.Id == id);
+            /*
+             * Para que ele faça um join das entidades e me
+             * traga os departamentos eu preciso incluir o
+             * Include(obj => obj.Department) do namespace: Microsoft.EntityFrameworkCore.
+             * 
+             * Chamado também de eager loading 
+            */
+            return _context.Seller.Include(obj => obj.Department)
+                .FirstOrDefault(seller => seller.Id == id);
 
         }
 

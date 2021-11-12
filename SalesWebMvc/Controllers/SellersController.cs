@@ -94,5 +94,30 @@ namespace SalesWebMvc.Controllers
 
         }
 
+        public IActionResult Details(int? id)
+        {
+
+            if (id == null)
+            {
+
+                return NotFound();
+
+            }
+
+            // Como usamos o ? essa variavel vira um nullable.
+            var obj = _sellerService.FindById(id.Value);
+
+            if (obj == null)
+            {
+
+                return NotFound();
+
+            }
+
+            return View(obj);
+
+
+        }
+
     }
 }
