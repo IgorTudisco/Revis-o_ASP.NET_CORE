@@ -5,6 +5,7 @@ using SalesWebMvc.Services;
 using SalesWebMvc.Services.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -66,8 +67,8 @@ namespace SalesWebMvc.Controllers
 
             if (id == null)
             {
-
-                return NotFound();
+                // Passando um error personalizado.
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
 
             }
 
@@ -77,8 +78,7 @@ namespace SalesWebMvc.Controllers
             if (obj == null)
             {
 
-                return NotFound();
-
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             return View(obj);
@@ -101,8 +101,7 @@ namespace SalesWebMvc.Controllers
             if (id == null)
             {
 
-                return NotFound();
-
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             // Como usamos o ? essa variavel vira um nullable.
@@ -111,8 +110,7 @@ namespace SalesWebMvc.Controllers
             if (obj == null)
             {
 
-                return NotFound();
-
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             return View(obj);
@@ -127,8 +125,7 @@ namespace SalesWebMvc.Controllers
             if (id == null)
             {
 
-                return NotFound();
-
+                return RedirectToAction(nameof(Error), new { message = "Id nor provided" });
             }
 
             var seller = _sellerService.FindById(id.Value);
@@ -136,8 +133,7 @@ namespace SalesWebMvc.Controllers
             if (seller == null)
             {
 
-                return NotFound();
-
+                return RedirectToAction(nameof(Error), new { message = "Id nor found" });
             }
 
             // Caso passe em tudo, ele vai mostrar uma lista de departamento
@@ -154,14 +150,14 @@ namespace SalesWebMvc.Controllers
         public IActionResult Edit(int id, Seller seller)
         {
 
-            // Caso dê algum erro com o meu id na url.
+            // Caso de dar algum erro com o meu id na url.
             if (id != seller.Id)
             {
-
-                return BadRequest();
-
+                // badrequest
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             }
 
+            // Passando o Bloco try porque possa ser que dê algum erro no meu DB
             try
             {
 
@@ -169,14 +165,29 @@ namespace SalesWebMvc.Controllers
             return RedirectToAction(nameof(Index));
 
             }
-            catch (NotFoundException)
+            catch (NotFoundException error)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = error });
             }
-            catch (DbConcurrencyException)
+            catch (DbConcurrencyException error)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = error });
             }
+
+        }
+
+        // Método que vai retornar o meus error personalizados.
+        public IActionResult Error(string message)
+        {
+            // Instanciando a class de erro do frameWork
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                // Passando o id do erro. Esse erro é os erros padrões do sistema.
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
 
         }
 
