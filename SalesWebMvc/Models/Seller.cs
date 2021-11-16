@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace SalesWebMvc.Models
@@ -8,8 +9,26 @@ namespace SalesWebMvc.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        // Usado para configuração de dados. No caso a escolhida foi de mostrar somente a data.
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        // Usado para mudar o nome direto na interface de todo o programa.
+        [Display(Name = "Birth Date")]
+        /*
+         * Usado para configuração de dados.
+         * No caso a escolhida foi de mostrar somente a data.
+        */
+        [DataType(DataType.Date)]
+        // Usado para configurar o formato da data.
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime BirthDate { get; set; }
+
+        // Usado para mudar o nome direto na interface de todo o programa.
+        [Display(Name = "Base Salary")]
+        // Usado para formatar o número com duas casa decimais.
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         public double BaseSalary { get; set; }
 
         public int DepartmentId { get; set; }
