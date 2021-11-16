@@ -102,8 +102,21 @@ namespace SalesWebMvc.Controllers
         // Mudando para o modo assíncrono
         public async Task<IActionResult> Delete(int id)
         {
+
+            // Fazendo o tratamento de erro no nível de serviço.
+            try
+            {
+
             await _sellerService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
+
+            }
+            catch (IntegrityException erro)
+            {
+
+                return RedirectToAction(nameof(Error), new { message = erro.Message });
+
+            }
 
         }
 
