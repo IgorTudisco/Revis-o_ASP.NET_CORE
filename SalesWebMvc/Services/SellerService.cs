@@ -20,23 +20,28 @@ namespace SalesWebMvc.Services
         }
 
         // Método que retornará uma lista com os vendedores.
-        public List<Seller> FindAll()
+        // Mudando para o modo assíncrono.
+        public async Task<List<Seller>> FindAllAsync()
         {
-            return _context.Seller.ToList();
+            return await _context.Seller.ToListAsync();
         }
 
-        // Add um novo Seller no DB
-        public void Insert(Seller seller)
+        // Add um novo Seller no DB.
+        // Mudando para o modo assíncrono.
+        public async Task InsertAsync(Seller seller)
         {
 
             _context.Add(seller);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
         }
 
         /*
          * Método que vai retornar o Seller no id selecionado.
+         * 
+         * Mudando para o modo assíncrono.
         */
-        public Seller FindById(int id)
+        public async Task<Seller> FindByIdAsync(int id)
         {
             /*
              * Para que ele faça um join das entidades e me
@@ -45,29 +50,32 @@ namespace SalesWebMvc.Services
              * 
              * Chamado também de eager loading 
             */
-            return _context.Seller.Include(obj => obj.Department)
-                .FirstOrDefault(seller => seller.Id == id);
+            return await _context.Seller.Include(obj => obj.Department)
+                .FirstOrDefaultAsync(seller => seller.Id == id);
 
         }
 
         // A implementação foi baseada no scaffold de Departamento
-        public void Remove(int id)
+        // Mudando para o modo assíncrono.
+        public async Task RemoveAsync(int id)
         {
 
-            var obj = _context.Seller.Find(id);
+            var obj = await _context.Seller.FindAsync(id);
             _context.Seller.Remove(obj);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
         }
 
         // Método que vau atualizar os vendedores
-        public void Update(Seller seller)
+        // Mudando para o modo assíncrono
+        public async Task UpdateAsync(Seller seller)
         {
             /*
              * Verificando com o Any se tem algum item igual ao id passado.
              * Se não existir ele vai lançar um exceção.
             */
-            if (!_context.Seller.Any(x => x.Id == seller.Id))
+            bool hasAny = await _context.Seller.AnyAsync(x => x.Id == seller.Id);
+            if (!hasAny)
             {
                 // Lançamento personalizado.
                 throw new NotFoundException("Id not found");
@@ -82,7 +90,7 @@ namespace SalesWebMvc.Services
             {
 
                 _context.Update(seller);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
             }
             catch (DbUpdateConcurrencyException e)

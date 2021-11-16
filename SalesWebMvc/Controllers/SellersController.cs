@@ -25,19 +25,20 @@ namespace SalesWebMvc.Controllers
             _departmentService = departmentService;
         }
 
-        public IActionResult Index()
+        // Mudando para assíncrono.
+        public async Task<IActionResult> Index()
         {
             // Passando o meu método para ser chamado no index.
-            var list = _sellerService.FindAll();
+            var list = await _sellerService.FindAllAsync();
 
             // Passando a lista para ser mostrada na view.
             return View(list);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             // Buscando todos os departamentos.
-            var departaments = _departmentService.FindAll();
+            var departaments = await _departmentService.FindAllAsync();
 
             /*
              * Passando os departamentos para o nossa view
@@ -49,17 +50,18 @@ namespace SalesWebMvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Para preveni ataques de (XSRF/CSRF).
-        public IActionResult Create(Seller seller)
+        // Mudando para o método assíncrono.
+        public async Task<IActionResult> Create(Seller seller)
         {
             // Teste para verificar se o Seller passou na validação.
             if (!ModelState.IsValid)
             {
-                var departments = _departmentService.FindAll();
-                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments }
+                var departments = await _departmentService.FindAllAsync();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel);
             };
 
-            _sellerService.Insert(seller);
+            await _sellerService.InsertAsync(seller);
 
             /*
              * Para melhorar a manutenção do codgo, usamos nameof.
@@ -70,7 +72,8 @@ namespace SalesWebMvc.Controllers
 
         // Ao passar o ? junto do parâmetro, o mesmo se torna opcional.
         // Método de alerta de deleção.
-        public IActionResult Delete(int? id)
+        // Mudando para o modo assíncrono.
+        public async Task<IActionResult> Delete(int? id)
         {
 
             if (id == null)
@@ -81,7 +84,7 @@ namespace SalesWebMvc.Controllers
             }
 
             // Como usamos o ? essa variavel vira um nullable.
-            var obj = _sellerService.FindById(id.Value);
+            var obj = await _sellerService.FindByIdAsync(id.Value);
 
             if (obj == null)
             {
@@ -96,14 +99,15 @@ namespace SalesWebMvc.Controllers
         // Método que de fato irá fazer a deleção.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        // Mudando para o modo assíncrono
+        public async Task<IActionResult> Delete(int id)
         {
-            _sellerService.Remove(id);
+            await _sellerService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
 
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
 
             if (id == null)
@@ -113,7 +117,7 @@ namespace SalesWebMvc.Controllers
             }
 
             // Como usamos o ? essa variavel vira um nullable.
-            var obj = _sellerService.FindById(id.Value);
+            var obj = await _sellerService.FindByIdAsync(id.Value);
 
             if (obj == null)
             {
@@ -127,7 +131,7 @@ namespace SalesWebMvc.Controllers
         }
 
         // Método que vai fazer a atualização do meu vendedor.
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
 
             if (id == null)
@@ -136,7 +140,7 @@ namespace SalesWebMvc.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id nor provided" });
             }
 
-            var seller = _sellerService.FindById(id.Value);
+            var seller = await _sellerService.FindByIdAsync(id.Value);
 
             if (seller == null)
             {
@@ -145,7 +149,7 @@ namespace SalesWebMvc.Controllers
             }
 
             // Caso passe em tudo, ele vai mostrar uma lista de departamento
-            List<Department> departments = _departmentService.FindAll();
+            List<Department> departments = await _departmentService.FindAllAsync();
 
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
             return View(viewModel);
@@ -155,13 +159,13 @@ namespace SalesWebMvc.Controllers
         // Metódo de edição do vendedor
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Seller seller)
+        public async Task<IActionResult> Edit(int id, Seller seller)
         {
             // Teste para verificar se o Seller passou na validação.
             if (!ModelState.IsValid)
             {
-                var departments = _departmentService.FindAll();
-                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments}
+                var departments = await _departmentService.FindAllAsync();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel);
             };
 
@@ -176,8 +180,8 @@ namespace SalesWebMvc.Controllers
             try
             {
 
-            _sellerService.Update(seller);
-            return RedirectToAction(nameof(Index));
+                await _sellerService.UpdateAsync(seller);
+                return RedirectToAction(nameof(Index));
 
             }
             catch (NotFoundException error)

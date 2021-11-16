@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SalesWebMvc.Services
 {
@@ -19,10 +20,11 @@ namespace SalesWebMvc.Services
         }
 
         // Metodo que retorna uma lista de departamentos ordenado pelo nome.
-        public List<Department> FindAll()
+        // Mudando o método para uma chamada assíncrona
+        public async Task<List<Department>> FindAllAsync()
         {
 
-            return _context.Department.OrderBy(by => by.Name).ToList();
+            return await _context.Department.OrderBy(by => by.Name).ToListAsync();
 
         }
 
