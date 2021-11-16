@@ -28,6 +28,8 @@
                 <!--Indica que esse campo está relacionado ao atributo name-->
                 <label asp-for="Seller.Name" class="control-label text-info"></label>
                 <input asp-for="Seller.Name" class="form-control" />
+                <!--Mensagem de erro por campo.-->
+                <span asp-validation-for="Seller.Name" class="text-danger"></span>
 
             </div>
 
@@ -35,6 +37,7 @@
 
                 <label asp-for="Seller.Email" class="control-label text-info"></label>
                 <input asp-for="Seller.Email" class="form-control" />
+                <span asp-validation-for="Seller.Email" class="text-danger"></span>
 
             </div>
 
@@ -42,6 +45,8 @@
 
                 <label asp-for="Seller.BirthDate" class="control-label text-info"></label>
                 <input asp-for="Seller.BirthDate" class="form-control" />
+                <span asp-validation-for="Seller.BirthDate" class="text-danger"></span>
+
 
             </div>
 
@@ -49,6 +54,8 @@
 
                 <label asp-for="Seller.BaseSalary" class="control-label text-info"></label>
                 <input asp-for="Seller.BaseSalary" class="form-control" />
+                <span asp-validation-for="Seller.BaseSalary" class="text-danger"></span>
+
 
             </div>
 
@@ -77,3 +84,8 @@
     </div>
 
 </div>
+
+<!--Habilitando o javascript-->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

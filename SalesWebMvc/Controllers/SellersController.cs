@@ -51,6 +51,14 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken] // Para preveni ataques de (XSRF/CSRF).
         public IActionResult Create(Seller seller)
         {
+            // Teste para verificar se o Seller passou na validação.
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments }
+                return View(viewModel);
+            };
+
             _sellerService.Insert(seller);
 
             /*
@@ -149,6 +157,13 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller)
         {
+            // Teste para verificar se o Seller passou na validação.
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments}
+                return View(viewModel);
+            };
 
             // Caso de dar algum erro com o meu id na url.
             if (id != seller.Id)

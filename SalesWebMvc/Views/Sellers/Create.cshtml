@@ -17,11 +17,16 @@
         <!--Esse Create é em relação ao método POST que está no controlador.-->
         <form asp-action="Create">
 
+            <!--Alerta dos erros-->
+            <!--<div asp-validation-summary="All" class="text-danger"></div>-->
+
             <div class="form-group">
 
                 <!--Indica que esse campo está relacionado ao atributo name-->
                 <label asp-for="Seller.Name" class="control-label text-info"></label>
                 <input asp-for="Seller.Name" class="form-control" />
+                <!--Mensagem de erro por campo.-->
+                <span asp-validation-for="Seller.Name" class="text-danger"></span>
 
             </div>
 
@@ -29,6 +34,7 @@
 
                 <label asp-for="Seller.Email" class="control-label text-info"></label>
                 <input asp-for="Seller.Email" class="form-control" />
+                <span asp-validation-for="Seller.Email" class="text-danger"></span>
 
             </div>
 
@@ -36,6 +42,8 @@
 
                 <label asp-for="Seller.BirthDate" class="control-label text-info"></label>
                 <input asp-for="Seller.BirthDate" class="form-control" />
+                <span asp-validation-for="Seller.BirthDate" class="text-danger"></span>
+
 
             </div>
 
@@ -43,19 +51,20 @@
 
                 <label asp-for="Seller.BaseSalary" class="control-label text-info"></label>
                 <input asp-for="Seller.BaseSalary" class="form-control" />
+                <span asp-validation-for="Seller.BaseSalary" class="text-danger"></span>
 
             </div>
 
             <div class="form-group">
                 <label asp-for="Seller.DepartmentId" class="control-label text-info"></label>
                 <!--
-                    O asp-items ele vai construir uma coixa de seleção
-                    com base na coleção que você passar.
+            O asp-items ele vai construir uma coixa de seleção
+            com base na coleção que você passar.
 
-                    Para isso passamos um new SelecList, que funciona dá seguinte forma:
-                    O primeiro elemento é o obj, o segundo o valor e o terceiro é
-                    o conteúdo que vai aparecer na caixa.
-                -->
+            Para isso passamos um new SelecList, que funciona dá seguinte forma:
+            O primeiro elemento é o obj, o segundo o valor e o terceiro é
+            o conteúdo que vai aparecer na caixa.
+        -->
                 <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(
                     Model.Departments, "Id", "Name"))" class="form-control"></select>
             </div>
@@ -71,3 +80,8 @@
     </div>
 
 </div>
+
+<!--Habilitando o javascript-->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
