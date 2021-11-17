@@ -45,5 +45,37 @@ namespace SalesWebMvc.Services
 
         }
 
+        /*
+         * Quando usamos o retorno agrupado o tipo dele muda.
+         * 
+         * Assim devemos usar o tipo IGrouping indicando pelo o que ele será
+         * agrupado.
+        */
+        public async Task<List<IGrouping<Department, SalesRecord>>> FindByDateGroupingAsync(DateTime? minDate, DateTime? maxDate)
+        {
+            // Essa função servirá de apoio para add mais funcionalidades a ela.
+            var result = from sales in _context.SalesRecord select sales;
+
+            // Verificando a data mínima.
+            if (minDate.HasValue)
+            {
+                result = result.Where(x => x.Date >= minDate);
+            }
+
+            // Verificando a data máxima
+            if (maxDate.HasValue)
+            {
+                result = result.Where(x => x.Date <= maxDate);
+            }
+
+            return await result
+                // O X é do tipo SalesRecord.
+                .Include(x => x.Seller) // Faz os join entre as tabelas.
+                .Include(x => x.Seller.Department) // Join com o departamento.
+                .OrderByDescending(x => x.Date) // Ordenando por Data.
+                .GroupBy(x => x.Seller.Department) // Agrupando por departamento.
+                .ToListAsync();
+
+        }
     }
 }

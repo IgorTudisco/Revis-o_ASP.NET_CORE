@@ -28,7 +28,7 @@ namespace SalesWebMvc.Models
             Sellers.Add(seller);
         }
 
-        public double totalSeller(DateTime initial, DateTime final)
+        public double TotalSales(DateTime initial, DateTime final)
         {
             /*
              * Usando a função sum da Linq para somar a quantidade de vendas em determinado
